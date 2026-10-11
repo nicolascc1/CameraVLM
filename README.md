@@ -15,22 +15,23 @@ CameraVLM is a video language model that jointly answers questions about a video
 
 Try it in the browser: **https://huggingface.co/spaces/<org>/CameraVLM**
 
-Upload a video, then ask questions about it or click *Describe camera motion* for a structured description of how the camera moves.
+Upload a video, then ask questions about it or click *Describe camera motion* for a structured description of how the camera moves. The demo shows text answers; camera poses and point tracks are available through the API.
 
 ## API
 
-The demo is a Gradio app, so it can be called programmatically with [`gradio_client`](https://www.gradio.app/guides/getting-started-with-the-python-client). No GPU or local model is needed.
+The demo is a Gradio app, so it can be called programmatically with [`gradio_client`](https://www.gradio.app/guides/getting-started-with-the-python-client). No GPU or local model is needed. Each call returns the answer together with per-frame camera poses and point tracks.
 
 ```bash
-pip install gradio_client
+pip install gradio_client numpy
 ```
 
 ```python
+import numpy as np
 from gradio_client import Client, handle_file
 
 client = Client("<org>/CameraVLM", token="hf_...")  # token is optional but raises your GPU quota
 
-answer = client.predict(
+answer, geometry = client.predict(
     video=handle_file("video.mp4"),  # local path or URL
     task="question",                 # "question" | "camera_motion"
     prompt="How does the camera move relative to the car?",
@@ -38,6 +39,11 @@ answer = client.predict(
     api_name="/predict",
 )
 print(answer)
+
+g = np.load(geometry)               # local path to an .npz file
+g["camera_to_world"].shape          # (S, 4, 4) per-frame camera poses
+g["intrinsics"].shape               # (S, 3, 3)
+g["tracks"].shape                   # (S/2, 256, 2) point tracks in pixels
 ```
 
 Structured camera-motion description (the answer is a JSON string):
@@ -45,7 +51,7 @@ Structured camera-motion description (the answer is a JSON string):
 ```python
 import json
 
-answer = client.predict(video=handle_file("video.mp4"), task="camera_motion", prompt="", api_name="/predict")
+answer, geometry = client.predict(video=handle_file("video.mp4"), task="camera_motion", prompt="", api_name="/predict")
 motion = json.loads(answer)  # primary_motion, secondary_motion, temporal_pattern, camera_static, direction, evidence, confidence
 ```
 
@@ -59,7 +65,7 @@ python examples/api_client.py video.mp4 --prompt "How does the camera move?"
 python examples/api_client.py video1.mp4 video2.mp4 --camera-motion
 ```
 
-Results are appended to `predictions.jsonl` under `--output-dir`.
+Each video gets `result.json` and `geometry.npz` under `--output-dir`, plus a line in `predictions.jsonl`.
 
 ### Parameters
 
@@ -70,7 +76,27 @@ Results are appended to `predictions.jsonl` under `--output-dir`.
 | `prompt` | str | Question about the video. |
 | `num_frames` | int | Frames sampled uniformly from the video (default and maximum: 128). |
 
-Returns the answer as a string.
+### Returns
+
+| Name | Type | Description |
+| --- | --- | --- |
+| `answer` | str | Model answer (a JSON string for `task="camera_motion"`). |
+| `geometry` | file (`.npz`) | Camera poses and point tracks, see below. |
+
+`geometry.npz` (S = sampled frames, G = S/2 temporal groups, N = 256 points):
+
+| Key | Shape | Description |
+| --- | --- | --- |
+| `extrinsics` | (S, 3, 4) | OpenCV world-to-camera poses; world frame at the first camera, translation up to scale. |
+| `camera_to_world` | (S, 4, 4) | Inverse of `extrinsics`. |
+| `intrinsics` | (S, 3, 3) | Pinhole intrinsics in source-video pixels. |
+| `pose_encoding` | (S, 9) | Raw camera-head output (translation, quaternion, field of view). |
+| `tracks` | (G, N, 2) | Pixel coordinates of a 16×16 point grid, one entry per temporal group of two frames. |
+| `track_visibility` | (G, N) | Visibility probability of each tracked point. |
+| `track_group_frames` | (G, 2) | Source-video frame indices of each temporal group. |
+| `track_window_starts` | (W,) | Groups at which the point grid restarts (every 16 groups). |
+| `frame_indices`, `timestamps` | (S,) | Sampled source-video frames and their timestamps in seconds. |
+| `image_size` | (2,) | Source-video height and width. |
 
 ### Usage limits
 
