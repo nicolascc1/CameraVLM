@@ -1,9 +1,7 @@
-"""Run CameraVLM on one or more videos through the hosted API and save text, camera poses and point tracks."""
+"""Ask CameraVLM about one or more videos through the hosted API."""
 import argparse
 import json
 import os
-import re
-import shutil
 from pathlib import Path
 
 from gradio_client import Client, handle_file
@@ -28,24 +26,23 @@ def main():
     client = Client(SPACE, token=args.token)
     output_dir = Path(args.output_dir)
     output_dir.mkdir(parents=True, exist_ok=True)
-    with open(output_dir / "predictions.jsonl", "a", encoding="utf-8") as summary:
-        for index, video in enumerate(args.videos):
-            text, camera_motion, geometry, trajectory, tracks = client.predict(
+    with open(output_dir / "predictions.jsonl", "a", encoding="utf-8") as predictions:
+        for video in args.videos:
+            answer = client.predict(
                 video=handle_file(video),
                 task="camera_motion" if args.camera_motion else "question",
                 prompt=args.prompt or "",
                 num_frames=args.num_frames,
                 api_name="/predict",
             )
-            name = f"{index:04d}_{re.sub(r'[^A-Za-z0-9_.-]+', '_', Path(video).stem)}"
-            target = output_dir / name
-            target.mkdir(parents=True, exist_ok=True)
-            for path, filename in ((geometry, "geometry.npz"), (trajectory, "trajectory.glb"), (tracks, "tracks.mp4")):
-                shutil.copy(path, target / filename)
-            record = {"video": str(video), "output": name, "text": text, "camera_motion": camera_motion}
-            (target / "result.json").write_text(json.dumps(record, indent=2, ensure_ascii=False))
-            summary.write(json.dumps(record, ensure_ascii=False) + "\n")
-            summary.flush()
+            record = {"video": str(video), "prompt": args.prompt, "answer": answer}
+            if args.camera_motion:
+                try:
+                    record["camera_motion"] = json.loads(answer)
+                except json.JSONDecodeError:
+                    record["camera_motion"] = None
+            predictions.write(json.dumps(record, ensure_ascii=False) + "\n")
+            predictions.flush()
             print(json.dumps(record, ensure_ascii=False, indent=2))
 
 

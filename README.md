@@ -15,14 +15,14 @@ CameraVLM is a video language model that jointly answers questions about a video
 
 Try it in the browser: **https://huggingface.co/spaces/<org>/CameraVLM**
 
-Upload a video, ask a question (or select *Camera motion* for a structured description), and get the answer, the camera trajectory and the point tracks.
+Upload a video, then ask questions about it or click *Describe camera motion* for a structured description of how the camera moves.
 
 ## API
 
 The demo is a Gradio app, so it can be called programmatically with [`gradio_client`](https://www.gradio.app/guides/getting-started-with-the-python-client). No GPU or local model is needed.
 
 ```bash
-pip install gradio_client numpy
+pip install gradio_client
 ```
 
 ```python
@@ -30,35 +30,23 @@ from gradio_client import Client, handle_file
 
 client = Client("<org>/CameraVLM", token="hf_...")  # token is optional but raises your GPU quota
 
-text, camera_motion, geometry, trajectory, tracks = client.predict(
-    video=handle_file("video.mp4"),          # local path or URL
-    task="question",                         # "question" | "camera_motion"
+answer = client.predict(
+    video=handle_file("video.mp4"),  # local path or URL
+    task="question",                 # "question" | "camera_motion"
     prompt="How does the camera move relative to the car?",
     num_frames=128,
     api_name="/predict",
 )
-print(text)        # answer
-print(trajectory)  # local path to trajectory.glb
-print(tracks)      # local path to tracks.mp4
+print(answer)
 ```
 
-Structured camera-motion description:
+Structured camera-motion description (the answer is a JSON string):
 
 ```python
-text, camera_motion, geometry, trajectory, tracks = client.predict(
-    video=handle_file("video.mp4"), task="camera_motion", prompt="", num_frames=128, api_name="/predict",
-)
-print(camera_motion)  # {"primary_motion": ..., "secondary_motion": ..., "direction": ..., ...}
-```
+import json
 
-Loading the returned geometry:
-
-```python
-import numpy as np
-
-g = np.load(geometry)
-g["camera_to_world"].shape  # (S, 4, 4)
-g["tracks"].shape           # (S/2, 256, 2)
+answer = client.predict(video=handle_file("video.mp4"), task="camera_motion", prompt="", api_name="/predict")
+motion = json.loads(answer)  # primary_motion, secondary_motion, temporal_pattern, camera_static, direction, evidence, confidence
 ```
 
 `client.view_api()` prints the full, up-to-date endpoint signature.
@@ -71,32 +59,18 @@ python examples/api_client.py video.mp4 --prompt "How does the camera move?"
 python examples/api_client.py video1.mp4 video2.mp4 --camera-motion
 ```
 
-Each video gets `result.json`, `geometry.npz`, `trajectory.glb` and `tracks.mp4` under `--output-dir`, plus a line in `predictions.jsonl`.
+Results are appended to `predictions.jsonl` under `--output-dir`.
 
-### Inputs
+### Parameters
 
 | Name | Type | Description |
 | --- | --- | --- |
 | `video` | file | Input video (`.mp4`, `.mov`, ...). |
-| `task` | str | `"question"` answers `prompt`; `"camera_motion"` returns a structured camera-motion description and ignores `prompt`. |
+| `task` | str | `"question"` answers `prompt`; `"camera_motion"` returns a JSON camera-motion description and ignores `prompt`. |
 | `prompt` | str | Question about the video. |
 | `num_frames` | int | Frames sampled uniformly from the video (default and maximum: 128). |
 
-### Outputs
-
-| Name | Type | Description |
-| --- | --- | --- |
-| `text` | str | Model answer. |
-| `camera_motion` | dict \| null | With `task="camera_motion"`: `primary_motion`, `secondary_motion`, `temporal_pattern`, `camera_static`, `direction`, `evidence`, `confidence`. |
-| `geometry` | file (`.npz`) | `extrinsics`, `camera_to_world`, `intrinsics`, `pose_encoding`, `tracks`, `track_visibility`, `frame_indices`, `timestamps`. |
-| `trajectory` | file (`.glb`) | 3D camera frustums and path, coloured by time; opens in any glTF viewer. |
-| `tracks` | file (`.mp4`) | Point tracks drawn on the input video. |
-
-Geometry conventions:
-
-- `extrinsics` / `camera_to_world`: per-frame OpenCV camera poses, world frame at the first camera, translation up to scale.
-- `intrinsics`: per-frame pinhole intrinsics in source-video pixels.
-- `tracks` / `track_visibility`: a 16×16 point grid per temporal patch of two frames, in source-video pixels, restarted every 16 patches.
+Returns the answer as a string.
 
 ### Usage limits
 
