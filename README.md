@@ -73,7 +73,7 @@ Each video gets `result.json` and `geometry.npz` under `--output-dir`, plus a li
 | --- | --- | --- |
 | `video` | file | Input video (`.mp4`, `.mov`, ...). |
 | `task` | str | `"question"` answers `prompt`; `"camera_motion"` returns a JSON camera-motion description and ignores `prompt`. |
-| `prompt` | str | Question about the video. |
+| `prompt` | str | Question about the video (default: `"How does the camera move?"`). |
 | `num_frames` | int | Frames sampled uniformly from the video (default and maximum: 128). |
 
 ### Returns
