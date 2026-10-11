@@ -8,7 +8,7 @@ from pathlib import Path
 
 from gradio_client import Client, handle_file
 
-SPACE = "<org>/CameraVLM"
+SPACE = "NicolasCC/CameraVLM"
 
 
 def parse_args():

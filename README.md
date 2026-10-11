@@ -13,7 +13,7 @@ CameraVLM is a video language model that jointly answers questions about a video
 
 ## Online demo
 
-Try it in the browser: **https://huggingface.co/spaces/<org>/CameraVLM**
+Try it in the browser: **https://huggingface.co/spaces/NicolasCC/CameraVLM**
 
 Upload a video, then ask questions about it or click *Describe camera motion* for a structured description of how the camera moves. The demo shows text answers; camera poses and point tracks are available through the API.
 
@@ -29,7 +29,7 @@ pip install gradio_client numpy
 import numpy as np
 from gradio_client import Client, handle_file
 
-client = Client("<org>/CameraVLM", token="hf_...")  # token is optional but raises your GPU quota
+client = Client("NicolasCC/CameraVLM", token="hf_...")  # token is optional but raises your GPU quota
 
 answer, geometry = client.predict(
     video=handle_file("video.mp4"),  # local path or URL
