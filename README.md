@@ -4,7 +4,7 @@
 
 Chong Cheng<sup>1,2*</sup> &nbsp; Ran Zhang<sup>2§</sup> &nbsp; Xinyuan Li<sup>2</sup> &nbsp; Alan Zhao<sup>2</sup> &nbsp; Hao Wang<sup>1†</sup> &nbsp; Xi Wang<sup>3</sup>
 
-<sup>1</sup>HKUST (Guangzhou) &nbsp; <sup>2</sup>Tencent &nbsp; <sup>3</sup>IP Paris
+<sup>1</sup>HKUST (Guangzhou) &nbsp; <sup>2</sup>Tencent &nbsp; <sup>3</sup>LIX, Ecole Polytechnique, IP Paris
 
 <sub><sup>*</sup>Work done during an internship at Tencent &nbsp;·&nbsp; <sup>†</sup>Corresponding author &nbsp;·&nbsp; <sup>§</sup>Project leader &nbsp;·&nbsp; Joint supervision: Hao Wang and Xi Wang</sub>
 
