@@ -40,7 +40,7 @@ def main():
             name = f"{index:04d}_{re.sub(r'[^A-Za-z0-9_.-]+', '_', Path(video).stem)}"
             target = output_dir / name
             target.mkdir(parents=True, exist_ok=True)
-            for path, filename in ((geometry, "geometry.npz"), (trajectory, "trajectory.png"), (tracks, "tracks.mp4")):
+            for path, filename in ((geometry, "geometry.npz"), (trajectory, "trajectory.glb"), (tracks, "tracks.mp4")):
                 shutil.copy(path, target / filename)
             record = {"video": str(video), "output": name, "text": text, "camera_motion": camera_motion}
             (target / "result.json").write_text(json.dumps(record, indent=2, ensure_ascii=False))

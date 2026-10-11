@@ -38,7 +38,7 @@ text, camera_motion, geometry, trajectory, tracks = client.predict(
     api_name="/predict",
 )
 print(text)        # answer
-print(trajectory)  # local path to trajectory.png
+print(trajectory)  # local path to trajectory.glb
 print(tracks)      # local path to tracks.mp4
 ```
 
@@ -71,7 +71,7 @@ python examples/api_client.py video.mp4 --prompt "How does the camera move?"
 python examples/api_client.py video1.mp4 video2.mp4 --camera-motion
 ```
 
-Each video gets `result.json`, `geometry.npz`, `trajectory.png` and `tracks.mp4` under `--output-dir`, plus a line in `predictions.jsonl`.
+Each video gets `result.json`, `geometry.npz`, `trajectory.glb` and `tracks.mp4` under `--output-dir`, plus a line in `predictions.jsonl`.
 
 ### Inputs
 
@@ -89,7 +89,7 @@ Each video gets `result.json`, `geometry.npz`, `trajectory.png` and `tracks.mp4`
 | `text` | str | Model answer. |
 | `camera_motion` | dict \| null | With `task="camera_motion"`: `primary_motion`, `secondary_motion`, `temporal_pattern`, `camera_static`, `direction`, `evidence`, `confidence`. |
 | `geometry` | file (`.npz`) | `extrinsics`, `camera_to_world`, `intrinsics`, `pose_encoding`, `tracks`, `track_visibility`, `frame_indices`, `timestamps`. |
-| `trajectory` | file (`.png`) | 3D plot of the camera trajectory. |
+| `trajectory` | file (`.glb`) | 3D camera frustums and path, coloured by time; opens in any glTF viewer. |
 | `tracks` | file (`.mp4`) | Point tracks drawn on the input video. |
 
 Geometry conventions:
