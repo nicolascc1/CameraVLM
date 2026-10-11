@@ -29,8 +29,6 @@ Can a vision–language model tell left from right? Modern VLMs solve visual puz
 
 - [x] Online demo
 - [x] API: answers, camera poses and point tracks
-- [ ] arXiv paper
-- [ ] Project page
 - [ ] Inference code
 - [ ] Model weights
 - [ ] Training code and data preparation
