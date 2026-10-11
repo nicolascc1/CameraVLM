@@ -11,11 +11,11 @@ Chong Cheng<sup>1,2*</sup> &nbsp; Ran Zhang<sup>2§</sup> &nbsp; Xinyuan Li<sup>
 <a href="https://3dagentworld.github.io/CameraVLM/"><img src="https://img.shields.io/badge/Project-Page-blue" alt="Project Page"></a>
 <a href="#todo"><img src="https://img.shields.io/badge/arXiv-paper-b31b1b" alt="arXiv"></a>
 <a href="https://huggingface.co/spaces/NicolasCC/CameraVLM"><img src="https://img.shields.io/badge/%F0%9F%A4%97%20Demo-Space-yellow" alt="Demo"></a>
-<a href="#todo"><img src="https://img.shields.io/badge/%F0%9F%A4%97%20Model-CameraVLM--9B-orange" alt="Model"></a>
+<img src="https://img.shields.io/badge/%F0%9F%A4%97%20Model-coming%20soon-lightgrey" alt="Model: coming soon">
 
 **CameraVLM tells how the camera moves in a video and describes it as structured shot metadata.**
 
-<video src="assets/teaser.mp4" width="100%" controls autoplay muted loop playsinline></video>
+https://github.com/user-attachments/assets/05e0bccc-e522-431a-9ef9-92b78905ea35
 
 </div>
 
