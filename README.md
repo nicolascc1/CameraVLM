@@ -8,16 +8,14 @@ Chong Cheng<sup>1,2*</sup> &nbsp; Ran Zhang<sup>2§</sup> &nbsp; Xinyuan Li<sup>
 
 <sub><sup>*</sup>Work done during an internship at Tencent &nbsp;·&nbsp; <sup>†</sup>Corresponding author &nbsp;·&nbsp; <sup>§</sup>Project leader &nbsp;·&nbsp; Joint supervision: Hao Wang and Xi Wang</sub>
 
-<img src="assets/logos/hkustgz.png" height="24" alt="HKUST (Guangzhou)"> &nbsp;&nbsp; <img src="assets/logos/tencent.png" height="15" alt="Tencent">
-
-<a href="#todo"><img src="https://img.shields.io/badge/Project-Page-blue" alt="Project Page"></a>
+<a href="https://3dagentworld.github.io/CameraVLM/"><img src="https://img.shields.io/badge/Project-Page-blue" alt="Project Page"></a>
 <a href="#todo"><img src="https://img.shields.io/badge/arXiv-paper-b31b1b" alt="arXiv"></a>
 <a href="https://huggingface.co/spaces/NicolasCC/CameraVLM"><img src="https://img.shields.io/badge/%F0%9F%A4%97%20Demo-Space-yellow" alt="Demo"></a>
 <a href="#todo"><img src="https://img.shields.io/badge/%F0%9F%A4%97%20Model-CameraVLM--9B-orange" alt="Model"></a>
 
 **CameraVLM tells how the camera moves in a video and describes it as structured shot metadata.**
 
-<img src="assets/teaser.png" width="100%" alt="CameraVLM teaser">
+<video src="assets/teaser.mp4" width="100%" controls autoplay muted loop playsinline></video>
 
 </div>
 
@@ -133,4 +131,4 @@ S = sampled frames, G = S/2 groups of two frames, N = 256 points.
 
 ## Acknowledgements
 
-CameraVLM builds on Qwen3.5, VGGT, CoWTracker, Depth-Anything-V2, Cambrian-P and Cambrian-S, CUT3R and DUSt3R, and is trained on CameraBench, ACaM, 3DThinker, Kubric, VSI-590K, ScanNet, ScanNet++ and ARKitScenes.
+CameraVLM builds on Qwen3.5, VGGT, CoWTracker, Depth-Anything-V2, Cambrian-P and Cambrian-S. We thank the authors for their excellent work.
