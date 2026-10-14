@@ -9,7 +9,7 @@ Chong Cheng<sup>1,2*</sup> &nbsp; Ran Zhang<sup>2§</sup> &nbsp; Xinyuan Li<sup>
 <sub><sup>*</sup>Work done during an internship at Tencent &nbsp;·&nbsp; <sup>†</sup>Corresponding author &nbsp;·&nbsp; <sup>§</sup>Project leader &nbsp;·&nbsp; Joint supervision: Hao Wang and Xi Wang</sub>
 
 <a href="https://3dagentworld.github.io/CameraVLM/"><img src="https://img.shields.io/badge/Project-Page-blue" alt="Project Page"></a>
-<a href="#todo"><img src="https://img.shields.io/badge/arXiv-paper-b31b1b" alt="arXiv"></a>
+<a href="https://arxiv.org/abs/2610.17242"><img src="https://img.shields.io/badge/arXiv-2610.17242-b31b1b" alt="arXiv"></a>
 <a href="https://huggingface.co/spaces/NicolasCC/CameraVLM"><img src="https://img.shields.io/badge/%F0%9F%A4%97%20Demo-Space-yellow" alt="Demo"></a>
 <img src="https://img.shields.io/badge/%F0%9F%A4%97%20Model-coming%20soon-lightgrey" alt="Model: coming soon">
 
@@ -124,8 +124,9 @@ S = sampled frames, G = S/2 groups of two frames, N = 256 points.
 @article{cheng2026cameravlm,
   title   = {When Left Is Right? Camera-Motion Understanding beyond Screen},
   author  = {Cheng, Chong and Zhang, Ran and Li, Xinyuan and Zhao, Alan and Wang, Hao and Wang, Xi},
-  journal = {arXiv preprint arXiv:XXXX.XXXXX},
-  year    = {2026}
+  journal = {arXiv preprint arXiv:2610.17242},
+  year    = {2026},
+  url     = {https://arxiv.org/abs/2610.17242}
 }
 ```
 
